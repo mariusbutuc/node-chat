@@ -1,7 +1,15 @@
+/*jslint         browser : true, continue : true,
+  devel  : true, indent  : 2,    maxerr   : 50,
+  newcap : true, nomen   : true, plusplus : true,
+  regexp : true, sloppy  : true, vars     : false,
+  white  : true
+*/
+
+/*global $ */
+
 function divEscapedContentElement(message) {
   return $('<div></div>').text(message);
 }
-
 function divSystemContentElement(message) {
   return $('<div></div>').html('<i>' + message + '</i>');
 }
@@ -9,18 +17,16 @@ function divSystemContentElement(message) {
 function processUserInput(chatApp, socket) {
   var message = $('#send-message').val();
   var systemMessage;
-
   if (message.charAt(0) === '/') {
     systemMessage = chatApp.processCommand(message);
     if (systemMessage) {
       $('#messages').append(divSystemContentElement(systemMessage));
     }
-  } else {
+} else {
     chatApp.sendMessage($('#room').text(), message);
     $('#messages').append(divEscapedContentElement(message));
-    $('#messages').scrollTop($('#messages').prop(scrollHeight));
-  }
-
+    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
+}
   $('#send-message').val('');
 }
 
@@ -30,11 +36,10 @@ $(document).ready(function() {
 
   socket.on('nameResult', function(result) {
     var message;
-
     if (result.success) {
-      message: 'You are now known as ' + result.name + '.';
+      message = 'You are now known as ' + result.name + '.';
     } else {
-      message = result.message
+      message = result.message;
     }
     $('#messages').append(divSystemContentElement(message));
   });
@@ -44,7 +49,7 @@ $(document).ready(function() {
     $('#messages').append(divSystemContentElement('Room changed.'));
   });
 
-  socket.on('message', function(message) {
+  socket.on('message', function (message) {
     var newElement = $('<div></div>').text(message.text);
     $('#messages').append(newElement);
   });
@@ -54,7 +59,7 @@ $(document).ready(function() {
 
     for(var room in rooms) {
       room = room.substring(1, room.length);
-      if(room !== '') {
+      if (room != '') {
         $('#room-list').append(divEscapedContentElement(room));
       }
     }
@@ -71,7 +76,7 @@ $(document).ready(function() {
 
   $('#send-message').focus();
 
-  $('#sendform').submit(function() {
+  $('#send-form').submit(function() {
     processUserInput(chatApp, socket);
     return false;
   });

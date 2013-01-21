@@ -1,26 +1,26 @@
-var
-  // HTTP server and client functionality
-  http  = require('http'),
-  // filesystem-related functionality
-  fs    = require('fs'),
-  // filesystem path-related functionality
-  path  = require('path'),
-  // ability to derive a MIME type based on a filename extension
-  mime  = require('mime'),
-  // The cache object is where the contents of cached files are stored
-  cache = {},
-  port = process.env.VCAP_APP_PORT || 1337;
+/*jslint         browser : true, continue : true,
+  devel  : true, indent  : 2,    maxerr   : 50,
+  newcap : true, nomen   : true, plusplus : true,
+  regexp : true, sloppy  : true, vars     : false,
+  white  : true
+*/
+
+var http  = require('http');
+var fs    = require('fs');
+var path  = require('path');
+var mime  = require('mime');
+var cache = {};
 
 function send404(response) {
   response.writeHead(404, {'Content-Type': 'text/plain'});
-  response.write('Error 404: resource not found');
+  response.write('Error 404: resource not found.');
   response.end();
 }
 
 function sendFile(response, filePath, fileContents) {
   response.writeHead(
     200,
-    {'content-type': mime.lookup(path.basename(filePath))}
+    {"content-type": mime.lookup(path.basename(filePath))}
   );
   response.end(fileContents);
 }
@@ -48,19 +48,17 @@ function serveStatic(response, cache, absPath) {
 
 var server = http.createServer(function (request, response) {
   var filePath = false;
-
   if (request.url === '/') {
     filePath = 'public/index.html';
   } else {
     filePath = 'public' + request.url;
   }
-
   var absPath = './' + filePath;
   serveStatic(response, cache, absPath);
 });
 
-server.listen(port, function () {
-  console.log('Server listening on port ' + port);
+server.listen(3000, function () {
+  console.log("Server listening on port 3000.");
 });
 
 var chatServer = require('./lib/chat_server');

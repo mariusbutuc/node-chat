@@ -1,8 +1,15 @@
-var Chat = function (socket) {
+/*jslint         browser : true, continue : true,
+  devel  : true, indent  : 2,    maxerr   : 50,
+  newcap : true, nomen   : true, plusplus : true,
+  regexp : true, sloppy  : true, vars     : false,
+  white  : true
+*/
+
+var Chat = function(socket) {
   this.socket = socket;
 };
 
-Chat.prototype.sendMessage = function (room, text) {
+Chat.prototype.sendMessage = function(room, text) {
   var message = {
     room: room,
     text: text
@@ -10,20 +17,19 @@ Chat.prototype.sendMessage = function (room, text) {
   this.socket.emit('message', message);
 };
 
-Chat.prototype.changeRoom = function (room) {
+Chat.prototype.changeRoom = function(room) {
   this.socket.emit('join', {
     newRoom: room
   });
 };
 
-Chat.prototype.processCommand = function (command) {
+Chat.prototype.processCommand = function(command) {
   var words = command.split(' ');
   var command = words[0]
-                    .substring(1, words[0].length)
-                    .toLowerCase();
+                  .substring(1, words[0].length)
+                  .toLowerCase();
   var message = false;
-
-  switch (command) {
+  switch(command) {
     case 'join':
       words.shift();
       var room = words.join(' ');
@@ -37,9 +43,9 @@ Chat.prototype.processCommand = function (command) {
       break;
 
     default:
-      message: 'Unrecognized command.';
+      message = 'Unrecognized command.';
       break;
-  }
+    }
 
   return message;
 };
