@@ -1,0 +1,13 @@
+{
+  "name": "node-chat",
+  "version": "0.0.1",
+  "description": "Minimalist multi-room chat server",
+  "private": true,
+  "dependencies": {
+    "mime": "~1.2.9",
+    "socket.io": "~0.9.13"
+  },
+  "scripts": {
+    "start": "node server.js"
+  }
+}
